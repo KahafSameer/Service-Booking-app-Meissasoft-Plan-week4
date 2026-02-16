@@ -9,6 +9,12 @@ router.post('/', auth, async (req, res) => {
         if (req.user.role !== 'admin') {
             return res.status(403).json({ message: 'Forbidden' });
         }
+
+        const { category, title, providerName, contactEmail, contactPhone } = req.body;
+        if (!category || !title || !providerName || !contactEmail || !contactPhone) {
+            return res.status(400).json({ message: 'Please enter all required fields' });
+        }
+
         const service = new Service(req.body);
         await service.save();
         res.json(service);
@@ -32,38 +38,5 @@ router.get('/', async (req, res) => {
     }
 });
 
-// //get service by id
-// router.get('/:id', async (req, res) => {
-//     try {
-//         const service = await Service.findById(req.params.id);
-//         res.json(service);
-//     } catch (err) {
-//         console.error(err);
-//         res.status(500).json({ message: 'Server error' });
-//     }
-// });
-
-// //update service
-// router.put('/:id', authMiddleware, async (req, res) => {
-//     try {
-//         const { category, title, providerName, contactEmail, contactPhone, maxBookings } = req.body;
-//         const service = await Service.findByIdAndUpdate(req.params.id, { category, title, providerName, contactEmail, contactPhone, maxBookings }, { new: true });
-//         res.json(service);
-//     } catch (err) {
-//         console.error(err);
-//         res.status(500).json({ message: 'Server error' });
-//     }
-// });
-
-// //delete service
-// router.delete('/:id', authMiddleware, async (req, res) => {
-//     try {
-//         const service = await Service.findByIdAndDelete(req.params.id);
-// //         res.json(service);
-//     } catch (err) {
-//         console.error(err);
-//         res.status(500).json({ message: 'Server error' });
-//     }
-// });
 
 module.exports = router;

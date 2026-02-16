@@ -9,6 +9,17 @@ const bcrypt = require('bcrypt');
 router.post('/signup', async (req, res) => {
     const { name, email, password, role } = req.body;
     try {
+        if (!name || !email || !password) {
+            return res.status(400).json({ message: 'Please enter all fields' });
+        }
+        if (password.length < 6) {
+            return res.status(400).json({ message: 'Password must be at least 6 characters' });
+        }
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({ message: 'Invalid email format' });
+        }
+
         let user = await User.findOne({ email });
         if (user) return res.status(400).json({ message: 'User already exists' });
 
@@ -30,6 +41,10 @@ router.post('/signup', async (req, res) => {
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
     try {
+        if (!email || !password) {
+            return res.status(400).json({ message: 'Please enter all fields' });
+        }
+
         const user = await User.findOne({ email });
         if (!user) return res.status(400).json({ message: 'Invalid Email' });
 

@@ -1,148 +1,105 @@
-# Postman API Testing Guide
+# API Testing Guide (Postman)
 
-This guide provides step-by-step instructions on how to test the Booking System API using Postman.
+This guide provides step-by-step instructions to test the backend API using Postman.
 
 ## Prerequisites
-- Ensure the backend server is running:
-  ```bash
-  cd backend
-  node server.js
-  ```
-  The server should be running on `http://localhost:5000`.
+- Ensure the backend server is running: `node backend/server.js` or `npm start`.
+- Base URL: `http://localhost:5000/api`
 
----
+## 1. Authentication
 
-## 1. Signup (Customer)
-Create a new standard user account.
-
+### Signup (Customer)
 - **Method:** `POST`
-- **URL:** `http://localhost:5000/api/auth/signup`
-- **Body:** Select **raw** > **JSON**
+- **URL:** `{{BaseURL}}/auth/signup`
+- **Body (JSON):**
   ```json
   {
-      "name": "John Doe",
-      "email": "john@example.com",
-      "password": "password123",
-      "role": "customer"
+    "name": "John Doe",
+    "email": "john@example.com",
+    "password": "password123",
+    "role": "customer"
   }
   ```
-- **Expected Response (200 OK):**
-  ```json
-  {
-      "token": "eyJhbGciOiJIUzI1NiIsIn...",
-      "user": {
-          "id": "65cb...",
-          "name": "John Doe",
-          "email": "john@example.com",
-          "role": "customer"
-      }
-  }
-  ```
+- **Expected:** 200 OK, returns token.
 
----
-
-## 2. Signup (Admin)
-Create a new admin account.
-
+### Signup (Admin)
 - **Method:** `POST`
-- **URL:** `http://localhost:5000/api/auth/signup`
-- **Body:** Select **raw** > **JSON**
+- **URL:** `{{BaseURL}}/auth/signup`
+- **Body (JSON):**
   ```json
   {
-      "name": "Admin User",
-      "email": "admin@example.com",
-      "password": "adminpassword",
-      "role": "admin"
+    "name": "Admin User",
+    "email": "admin@example.com",
+    "password": "adminpass",
+    "role": "admin"
   }
   ```
-- **Expected Response (200 OK):**
-  ```json
-  {
-      "token": "eyJhbGciOiJIUzI1NiIsIn...",
-      "user": {
-          "id": "65cb...",
-          "name": "Admin User",
-          "email": "admin@example.com",
-          "role": "admin"
-      }
-  }
-  ```
+- **Expected:** 200 OK, returns token.
 
----
-
-## 3. Login
-Log in to receive an authentication token.
-
+### Login
 - **Method:** `POST`
-- **URL:** `http://localhost:5000/api/auth/login`
-- **Body:** Select **raw** > **JSON**
+- **URL:** `{{BaseURL}}/auth/login`
+- **Body (JSON):**
   ```json
   {
-      "email": "admin@example.com",
-      "password": "adminpassword"
+    "email": "john@example.com",
+    "password": "password123"
   }
   ```
-- **Expected Response (200 OK):**
-  ```json
-  {
-      "token": "eyJhbGciOiJIUzI1NiIsIn...",
-      "user": {
-          "id": "65cb...",
-          "name": "Admin User",
-          "email": "admin@example.com",
-          "role": "admin"
-      }
-  }
-  ```
-  **Important:** Copy the `token` string from this response. You will need it for the next steps.
+- **Expected:** 200 OK, returns token.
+- **Action:** Copy the `token` from the response.
 
----
+## 2. Services (Admin Only)
 
-## 4. Create Service (Admin Only)
-Create a new booking service. **Requires Admin Token.**
+**Auth Header:** Key: `Authorization`, Value: `Bearer <Admin_Token>`
 
+### Create Service
 - **Method:** `POST`
-- **URL:** `http://localhost:5000/api/services`
-- **Headers:**
-  - Key: `Authorization`
-  - Value: `Bearer <YOUR_ADMIN_TOKEN_HERE>`
-- **Body:** Select **raw** > **JSON**
+- **URL:** `{{BaseURL}}/services`
+- **Body (JSON):**
   ```json
   {
-      "category": "DevOps",
-      "title": "CI/CD Pipeline Setup",
-      "providerName": "Tech Solutions Inc.",
-      "contactEmail": "contact@techsolutions.com",
-      "contactPhone": "123-456-7890",
-      "maxBookings": 10
+    "category": "DevOps",
+    "title": "CI/CD Pipeline Setup",
+    "providerName": "Tech Solutions",
+    "contactEmail": "contact@tech.com",
+    "contactPhone": "1234567890",
+    "maxBookings": 5
   }
   ```
-- **Valid Categories:** `DevOps`, `DevSecOps`, `MLOps`, `Cloud Infrastructure`, `CI/CD Automation`, `Containerization`, `Kubernetes Management`, `Monitoring & Logging`, `Security & Compliance`
+- **Expected:** 200 OK, returns service object.
+- **Action:** Copy `_id` of the created service.
 
-- **Expected Response (200 OK):**
-  ```json
-  {
-      "category": "DevOps",
-      "title": "CI/CD Pipeline Setup",
-      "...": "...",
-      "_id": "65cb...",
-      "createdAt": "2024-02-15T..."
-  }
-  ```
-
----
-
-## 5. Access Dashboard (Protected Route)
-Access a route that requires a valid token.
-
+### Get All Services
 - **Method:** `GET`
-- **URL:** `http://localhost:5000/api/dashboard/data`
-- **Headers:**
-  - Key: `Authorization`
-  - Value: `Bearer <YOUR_TOKEN_HERE>`
-- **Expected Response (200 OK):**
-  ```json
-  {
-      "message": "welcome user 65cb..."
-  }
-  ```
+- **URL:** `{{BaseURL}}/services`
+- **Expected:** 200 OK, list of services.
+
+## 3. Bookings
+
+**Auth Header:** Key: `Authorization`, Value: `Bearer <Customer_Token>`
+
+### Create Booking
+- **Method:** `POST`
+- **URL:** `{{BaseURL}}/booking/<Service_ID>`
+- **Expected:** 201 Created.
+- **Test Race Condition:** Send multiple concurrent requests to this endpoint (using Postman Collection Runner or similar) to verify `currentBookings` does not exceed `maxBookings`.
+
+### Get My Bookings
+- **Method:** `GET`
+- **URL:** `{{BaseURL}}/booking/my`
+- **Expected:** 200 OK, list of user's bookings.
+
+### Get All Bookings (Admin Only)
+- **Method:** `GET`
+- **URL:** `{{BaseURL}}/booking`
+- **Header:** `Authorization: Bearer <Admin_Token>`
+- **Expected:** 200 OK, list of all bookings.
+
+## 4. Dashboard
+
+### Get Dashboard Data
+- **Method:** `GET`
+- **URL:** `{{BaseURL}}/dashboard/data`
+- **Header:** `Authorization: Bearer <Token>`
+- **Expected:** 200 OK.
