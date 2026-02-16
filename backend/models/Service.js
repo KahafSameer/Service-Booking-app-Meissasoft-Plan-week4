@@ -35,6 +35,10 @@ const ServiceSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+           available: {
+            type: Boolean,
+            default: true,
+        },
         maxBookings: {
             type: Number,
             default: 5,
@@ -43,6 +47,7 @@ const ServiceSchema = new mongoose.Schema(
             type: Number,
             default: 0,
         },
+     
     },
     { timestamps: true }
 

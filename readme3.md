@@ -6,7 +6,7 @@ This document details the comprehensive review of the "Booking-System-plan" proj
 ## 1. Feature Implementation: Role-Based Authentication
 **Goal:** The system needed to distinguish between "Customers" and "Admins" to control access to specific features (like creating services).
 
-### Changes Made:
+### Changes Made: 
 - **Backend (`models/User.js`):**
     - Modified the `User` schema to include a `role` field.
     - `role` is an Enum restricted to `['customer', 'admin']`.

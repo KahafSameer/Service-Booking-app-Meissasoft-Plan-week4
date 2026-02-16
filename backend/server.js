@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const authRoutes = require('./routes/authRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
 const serviceRoutes = require('./routes/serviceRoutes');
+const bookingRoutes = require('./routes/bookingRoutes');
 dotenv.config();
 
 const app = express();
@@ -14,7 +15,7 @@ app.use(cors());
 app.use('/api/auth', authRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/services', serviceRoutes);
-
+app.use('/api/booking', bookingRoutes);
 
 //testing routes
 
@@ -32,3 +33,11 @@ mongoose.connect(process.env.MONGO_URI)
         });
     })
     .catch((err) => console.error('Error connecting to MongoDB:', err));
+
+
+// mongoose.connect(process.env.MONGO_URI)
+//     .then(() => {
+//         console.log("MongoDB Connected");
+//         console.log("DB Name:", mongoose.connection.name);
+//     })
+//     .catch(err => console.log(err));
