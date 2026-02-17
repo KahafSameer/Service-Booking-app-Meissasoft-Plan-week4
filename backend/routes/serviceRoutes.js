@@ -20,10 +20,9 @@ router.post('/', auth, async (req, res) => {
         res.json(service);
     } catch (err) {
         console.error(err);
-        if (err.name === 'ValidationError') {
-            return res.status(400).json({ message: err.message });
-        }
-        res.status(500).json({ message: 'Server error' });
+     
+        res.status(500).json({ message: 'Server error', error: err.message });
+         
     }
 });
 

@@ -10,9 +10,9 @@ router.post('/signup', async (req, res) => {
     const { name, email, password, role } = req.body;
     try {
         if (!name || !email || !password) {
-            return res.status(400).json({ message: 'Please enter all fields' });
+            return res.status(400).json({ message: 'Please enter Name, Email and Password fields' });
         }
-        if (password.length < 6) {
+        if (password.length < 4) {
             return res.status(400).json({ message: 'Password must be at least 6 characters' });
         }
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

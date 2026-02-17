@@ -6,6 +6,7 @@ const authRoutes = require('./routes/authRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
 const serviceRoutes = require('./routes/serviceRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
+const authenticateToken = require('./middleware/auth');
 dotenv.config();
 
 const app = express();
@@ -13,9 +14,9 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use('/api/auth', authRoutes);
-app.use('/api/dashboard', dashboardRoutes);
-app.use('/api/services', serviceRoutes);
-app.use('/api/booking', bookingRoutes);
+app.use('/api/dashboard',authenticateToken, dashboardRoutes);
+app.use('/api/services', authenticateToken,serviceRoutes);
+app.use('/api/booking',authenticateToken, bookingRoutes);
 
 //testing routes
 

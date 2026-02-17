@@ -32,7 +32,9 @@ a:hover {
   text-decoration: underline;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   margin-bottom: 15px;
   color: #333;
 }
@@ -85,18 +87,76 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-.container { max-width: 800px; margin: 20px auto; padding: 16px; background: #fff; border-radius: 6px; }
-.card { border: 1px solid #ddd; padding: 12px; margin: 10px 0; border-radius: 4px; }
-.nav { background: #333; padding: 10px 16px; margin: -16px -16px 16px -16px; border-radius: 6px 6px 0 0; }
-.nav a { color: #fff; margin-right: 16px; }
-.btn-link { background: none; color: #fff; padding: 0; margin-left: auto; }
-.auth-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-.auth-card { max-width: 360px; width: 100%; padding: 24px; background: #fff; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,.1); }
-.auth-card input, .auth-card select { margin-bottom: 10px; }
-.msg { margin: 10px 0; font-size: 14px; }
-.msg.success { color: #2e7d32; }
-.msg.error { color: #c62828; }
+.container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 16px;
+  background: #fff;
+  border-radius: 6px;
+}
+
+.card {
+  border: 1px solid #ddd;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 4px;
+}
+
+.nav {
+  background: #333;
+  padding: 10px 16px;
+  margin: -16px -16px 16px -16px;
+  border-radius: 6px 6px 0 0;
+}
+
+.nav a {
+  color: #fff;
+  margin-right: 16px;
+}
+
+.btn-link {
+  background: none;
+  color: #fff;
+  padding: 0;
+  margin-left: auto;
+}
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-card {
+  max-width: 360px;
+  width: 100%;
+  padding: 24px;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .1);
+}
+
+.auth-card input,
+.auth-card select {
+  margin-bottom: 10px;
+}
+
+.msg {
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+.msg.success {
+  color: #2e7d32;
+}
+
+.msg.error {
+  color: #c62828;
+}
 
 @media (prefers-color-scheme: light) {
-  :root { color: #213547; }
+  :root {
+    color: #213547;
+  }
 }
