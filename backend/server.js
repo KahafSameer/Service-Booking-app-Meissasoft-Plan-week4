@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+
 const authRoutes = require('./routes/authRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
 const serviceRoutes = require('./routes/serviceRoutes');
@@ -12,7 +13,10 @@ dotenv.config();
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: "https://abcd1234.ngrok.io/api",
+  credentials: true
+}));
 app.use('/api/auth', authRoutes);
 app.use('/api/dashboard',authenticateToken, dashboardRoutes);
 app.use('/api/services', authenticateToken,serviceRoutes);
@@ -36,9 +40,3 @@ mongoose.connect(process.env.MONGO_URI)
     .catch((err) => console.error('Error connecting to MongoDB:', err));
 
 
-// mongoose.connect(process.env.MONGO_URI)
-//     .then(() => {
-//         console.log("MongoDB Connected");
-//         console.log("DB Name:", mongoose.connection.name);
-//     })
-//     .catch(err => console.log(err));
