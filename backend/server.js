@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-
+const PORT = process.env.PORT || 5000;
 const authRoutes = require('./routes/authRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
 const serviceRoutes = require('./routes/serviceRoutes');
@@ -14,15 +14,15 @@ const app = express();
 
 app.use(express.json());
 app.use(cors({
-  origin: "https://abcd1234.ngrok.io/api",
-  credentials: true
+    origin: "*",
+    credentials: true
 }));
 app.use('/api/auth', authRoutes);
 app.use('/api/dashboard',authenticateToken, dashboardRoutes);
 app.use('/api/services', authenticateToken,serviceRoutes);
 app.use('/api/booking',authenticateToken, bookingRoutes);
 
-//testing routes
+//testing routes 
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
