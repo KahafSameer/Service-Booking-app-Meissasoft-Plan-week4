@@ -3,7 +3,7 @@ import api from "../api/axios";
 import Navbar from "./Navbar";
 
 interface Service {
-  _id: string;
+  id: string;
   title: string;
   category: string;
   providerName: string;
@@ -30,13 +30,14 @@ const Dashboard = () => {
 
   const handleBooking = async (id: string) => {
     try {
-      const res = await api.post(`/booking/${id}`);
+      const res = await api.post(`/booking/${id}`); // ✅ use id, not service._id
       setMessage(res.data.message || "Booking created");
       fetchServices();
     } catch (err: any) {
       setMessage(err.response?.data?.message || "Booking failed");
     }
   };
+
 
   useEffect(() => {
     fetchServices();
@@ -48,18 +49,19 @@ const Dashboard = () => {
       <h2>Services</h2>
       {message && <p className="msg success">{message}</p>}
       {services.map((s) => (
-        <div key={s._id} className="card">
+        <div key={s.id} className="card">
           <h3>{s.title}</h3>
           <p>Category: {s.category}</p>
           <p>Provider: {s.providerName}</p>
           <p>Contact: {s.contactEmail} | {s.contactPhone}</p>
           <p>Bookings: {s.currentBookings}/{s.maxBookings}</p>
           <button
-            onClick={() => handleBooking(s._id)}
+            onClick={() => handleBooking(s.id)}
             disabled={!s.available || s.currentBookings >= s.maxBookings}
           >
             {s.currentBookings >= s.maxBookings ? "Full" : "Book"}
           </button>
+
         </div>
       ))}
     </div>

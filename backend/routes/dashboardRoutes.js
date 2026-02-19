@@ -1,12 +1,13 @@
-const express = require('express');
+import express from 'express';
+import auth from '../middleware/auth.js';
+
 const router = express.Router();
-const auth = require('../middleware/auth');
 
 router.get('/data', auth, (req, res) => {
     res.json({ message: `welcome user ${req.user.id}` });
 });
 
-module.exports = router;
+export default router;
 
 
 

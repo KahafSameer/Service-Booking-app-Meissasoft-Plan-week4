@@ -40,11 +40,30 @@ export namespace $Enums {
 
 export type Role = (typeof Role)[keyof typeof Role]
 
+
+export const Category: {
+  DevOps: 'DevOps',
+  DevSecOps: 'DevSecOps',
+  MLOps: 'MLOps',
+  CloudInfrastructure: 'CloudInfrastructure',
+  CICDAutomation: 'CICDAutomation',
+  Containerization: 'Containerization',
+  KubernetesManagement: 'KubernetesManagement',
+  MonitoringLogging: 'MonitoringLogging',
+  SecurityCompliance: 'SecurityCompliance'
+};
+
+export type Category = (typeof Category)[keyof typeof Category]
+
 }
 
 export type Role = $Enums.Role
 
 export const Role: typeof $Enums.Role
+
+export type Category = $Enums.Category
+
+export const Category: typeof $Enums.Category
 
 /**
  * ##  Prisma Client ʲˢ
@@ -2113,7 +2132,7 @@ export namespace Prisma {
 
   export type ServiceMinAggregateOutputType = {
     id: number | null
-    category: string | null
+    category: $Enums.Category | null
     title: string | null
     providerName: string | null
     contactEmail: string | null
@@ -2127,7 +2146,7 @@ export namespace Prisma {
 
   export type ServiceMaxAggregateOutputType = {
     id: number | null
-    category: string | null
+    category: $Enums.Category | null
     title: string | null
     providerName: string | null
     contactEmail: string | null
@@ -2298,7 +2317,7 @@ export namespace Prisma {
 
   export type ServiceGroupByOutputType = {
     id: number
-    category: string
+    category: $Enums.Category
     title: string
     providerName: string
     contactEmail: string
@@ -2374,7 +2393,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
-      category: string
+      category: $Enums.Category
       title: string
       providerName: string
       contactEmail: string
@@ -2755,7 +2774,7 @@ export namespace Prisma {
    */
   interface ServiceFieldRefs {
     readonly id: FieldRef<"Service", 'Int'>
-    readonly category: FieldRef<"Service", 'String'>
+    readonly category: FieldRef<"Service", 'Category'>
     readonly title: FieldRef<"Service", 'String'>
     readonly providerName: FieldRef<"Service", 'String'>
     readonly contactEmail: FieldRef<"Service", 'String'>
@@ -4196,7 +4215,6 @@ export namespace Prisma {
 
 
   export const ServiceOrderByRelevanceFieldEnum: {
-    category: 'category',
     title: 'title',
     providerName: 'providerName',
     contactEmail: 'contactEmail',
@@ -4229,6 +4247,13 @@ export namespace Prisma {
    * Reference to a field of type 'Role'
    */
   export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role'>
+    
+
+
+  /**
+   * Reference to a field of type 'Category'
+   */
+  export type EnumCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Category'>
     
 
 
@@ -4319,7 +4344,7 @@ export namespace Prisma {
     OR?: ServiceWhereInput[]
     NOT?: ServiceWhereInput | ServiceWhereInput[]
     id?: IntFilter<"Service"> | number
-    category?: StringFilter<"Service"> | string
+    category?: EnumCategoryFilter<"Service"> | $Enums.Category
     title?: StringFilter<"Service"> | string
     providerName?: StringFilter<"Service"> | string
     contactEmail?: StringFilter<"Service"> | string
@@ -4353,7 +4378,7 @@ export namespace Prisma {
     AND?: ServiceWhereInput | ServiceWhereInput[]
     OR?: ServiceWhereInput[]
     NOT?: ServiceWhereInput | ServiceWhereInput[]
-    category?: StringFilter<"Service"> | string
+    category?: EnumCategoryFilter<"Service"> | $Enums.Category
     title?: StringFilter<"Service"> | string
     providerName?: StringFilter<"Service"> | string
     contactEmail?: StringFilter<"Service"> | string
@@ -4390,7 +4415,7 @@ export namespace Prisma {
     OR?: ServiceScalarWhereWithAggregatesInput[]
     NOT?: ServiceScalarWhereWithAggregatesInput | ServiceScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Service"> | number
-    category?: StringWithAggregatesFilter<"Service"> | string
+    category?: EnumCategoryWithAggregatesFilter<"Service"> | $Enums.Category
     title?: StringWithAggregatesFilter<"Service"> | string
     providerName?: StringWithAggregatesFilter<"Service"> | string
     contactEmail?: StringWithAggregatesFilter<"Service"> | string
@@ -4520,7 +4545,7 @@ export namespace Prisma {
   }
 
   export type ServiceCreateInput = {
-    category: string
+    category: $Enums.Category
     title: string
     providerName: string
     contactEmail: string
@@ -4535,7 +4560,7 @@ export namespace Prisma {
 
   export type ServiceUncheckedCreateInput = {
     id?: number
-    category: string
+    category: $Enums.Category
     title: string
     providerName: string
     contactEmail: string
@@ -4549,7 +4574,7 @@ export namespace Prisma {
   }
 
   export type ServiceUpdateInput = {
-    category?: StringFieldUpdateOperationsInput | string
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
     title?: StringFieldUpdateOperationsInput | string
     providerName?: StringFieldUpdateOperationsInput | string
     contactEmail?: StringFieldUpdateOperationsInput | string
@@ -4564,7 +4589,7 @@ export namespace Prisma {
 
   export type ServiceUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
-    category?: StringFieldUpdateOperationsInput | string
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
     title?: StringFieldUpdateOperationsInput | string
     providerName?: StringFieldUpdateOperationsInput | string
     contactEmail?: StringFieldUpdateOperationsInput | string
@@ -4579,7 +4604,7 @@ export namespace Prisma {
 
   export type ServiceCreateManyInput = {
     id?: number
-    category: string
+    category: $Enums.Category
     title: string
     providerName: string
     contactEmail: string
@@ -4592,7 +4617,7 @@ export namespace Prisma {
   }
 
   export type ServiceUpdateManyMutationInput = {
-    category?: StringFieldUpdateOperationsInput | string
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
     title?: StringFieldUpdateOperationsInput | string
     providerName?: StringFieldUpdateOperationsInput | string
     contactEmail?: StringFieldUpdateOperationsInput | string
@@ -4606,7 +4631,7 @@ export namespace Prisma {
 
   export type ServiceUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
-    category?: StringFieldUpdateOperationsInput | string
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
     title?: StringFieldUpdateOperationsInput | string
     providerName?: StringFieldUpdateOperationsInput | string
     contactEmail?: StringFieldUpdateOperationsInput | string
@@ -4794,6 +4819,13 @@ export namespace Prisma {
     _max?: NestedEnumRoleFilter<$PrismaModel>
   }
 
+  export type EnumCategoryFilter<$PrismaModel = never> = {
+    equals?: $Enums.Category | EnumCategoryFieldRefInput<$PrismaModel>
+    in?: $Enums.Category[]
+    notIn?: $Enums.Category[]
+    not?: NestedEnumCategoryFilter<$PrismaModel> | $Enums.Category
+  }
+
   export type BoolFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolFilter<$PrismaModel> | boolean
@@ -4868,6 +4900,16 @@ export namespace Prisma {
     id?: SortOrder
     maxBookings?: SortOrder
     currentBookings?: SortOrder
+  }
+
+  export type EnumCategoryWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Category | EnumCategoryFieldRefInput<$PrismaModel>
+    in?: $Enums.Category[]
+    notIn?: $Enums.Category[]
+    not?: NestedEnumCategoryWithAggregatesFilter<$PrismaModel> | $Enums.Category
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCategoryFilter<$PrismaModel>
+    _max?: NestedEnumCategoryFilter<$PrismaModel>
   }
 
   export type BoolWithAggregatesFilter<$PrismaModel = never> = {
@@ -5008,6 +5050,10 @@ export namespace Prisma {
     connectOrCreate?: BookingCreateOrConnectWithoutServiceInput | BookingCreateOrConnectWithoutServiceInput[]
     createMany?: BookingCreateManyServiceInputEnvelope
     connect?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
+  }
+
+  export type EnumCategoryFieldUpdateOperationsInput = {
+    set?: $Enums.Category
   }
 
   export type BoolFieldUpdateOperationsInput = {
@@ -5162,6 +5208,13 @@ export namespace Prisma {
     _max?: NestedEnumRoleFilter<$PrismaModel>
   }
 
+  export type NestedEnumCategoryFilter<$PrismaModel = never> = {
+    equals?: $Enums.Category | EnumCategoryFieldRefInput<$PrismaModel>
+    in?: $Enums.Category[]
+    notIn?: $Enums.Category[]
+    not?: NestedEnumCategoryFilter<$PrismaModel> | $Enums.Category
+  }
+
   export type NestedBoolFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolFilter<$PrismaModel> | boolean
@@ -5176,6 +5229,16 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type NestedEnumCategoryWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Category | EnumCategoryFieldRefInput<$PrismaModel>
+    in?: $Enums.Category[]
+    notIn?: $Enums.Category[]
+    not?: NestedEnumCategoryWithAggregatesFilter<$PrismaModel> | $Enums.Category
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCategoryFilter<$PrismaModel>
+    _max?: NestedEnumCategoryFilter<$PrismaModel>
   }
 
   export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
@@ -5290,7 +5353,7 @@ export namespace Prisma {
   }
 
   export type ServiceCreateWithoutBookingsInput = {
-    category: string
+    category: $Enums.Category
     title: string
     providerName: string
     contactEmail: string
@@ -5304,7 +5367,7 @@ export namespace Prisma {
 
   export type ServiceUncheckedCreateWithoutBookingsInput = {
     id?: number
-    category: string
+    category: $Enums.Category
     title: string
     providerName: string
     contactEmail: string
@@ -5353,7 +5416,7 @@ export namespace Prisma {
   }
 
   export type ServiceUpdateWithoutBookingsInput = {
-    category?: StringFieldUpdateOperationsInput | string
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
     title?: StringFieldUpdateOperationsInput | string
     providerName?: StringFieldUpdateOperationsInput | string
     contactEmail?: StringFieldUpdateOperationsInput | string
@@ -5367,7 +5430,7 @@ export namespace Prisma {
 
   export type ServiceUncheckedUpdateWithoutBookingsInput = {
     id?: IntFieldUpdateOperationsInput | number
-    category?: StringFieldUpdateOperationsInput | string
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
     title?: StringFieldUpdateOperationsInput | string
     providerName?: StringFieldUpdateOperationsInput | string
     contactEmail?: StringFieldUpdateOperationsInput | string

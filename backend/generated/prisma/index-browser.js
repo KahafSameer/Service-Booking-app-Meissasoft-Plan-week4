@@ -162,7 +162,6 @@ exports.Prisma.UserOrderByRelevanceFieldEnum = {
 };
 
 exports.Prisma.ServiceOrderByRelevanceFieldEnum = {
-  category: 'category',
   title: 'title',
   providerName: 'providerName',
   contactEmail: 'contactEmail',
@@ -171,6 +170,18 @@ exports.Prisma.ServiceOrderByRelevanceFieldEnum = {
 exports.Role = exports.$Enums.Role = {
   customer: 'customer',
   admin: 'admin'
+};
+
+exports.Category = exports.$Enums.Category = {
+  DevOps: 'DevOps',
+  DevSecOps: 'DevSecOps',
+  MLOps: 'MLOps',
+  CloudInfrastructure: 'CloudInfrastructure',
+  CICDAutomation: 'CICDAutomation',
+  Containerization: 'Containerization',
+  KubernetesManagement: 'KubernetesManagement',
+  MonitoringLogging: 'MonitoringLogging',
+  SecurityCompliance: 'SecurityCompliance'
 };
 
 exports.Prisma.ModelName = {

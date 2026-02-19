@@ -3,7 +3,7 @@ import api from "../api/axios";
 import Navbar from "./Navbar";
 
 interface Service {
-  _id: string;
+  id: string;
   title: string;
   category: string;
   providerName: string;
@@ -12,7 +12,7 @@ interface Service {
 }
 
 interface Booking {
-  _id: string;
+  id: string;
   service: Service;
 }
 
@@ -40,7 +40,7 @@ const MyBookings = () => {
         <p>No bookings yet.</p>
       ) : (
         bookings.map((b) => (
-          <div key={b._id} className="card">
+          <div key={b.id} className="card">
             <h4>{b.service?.title}</h4>
             <p>Category: {b.service?.category}</p>
             <p>Provider: {b.service?.providerName}</p>
