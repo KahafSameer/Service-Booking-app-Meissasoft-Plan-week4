@@ -45,8 +45,9 @@ router.post('/', auth, async (req, res) => {
 //get all services (Prisma + MySQL)
 router.get('/', async (req, res) => {
     try {
-        // const services = await Service.find(); // MongoDB query
-        const services = await prisma.service.findMany();
+        const services = await prisma.service.findMany({
+            orderBy: { createdAt: 'desc' }
+        });
         res.json(services);
     } catch (err) {
         console.error(err);
@@ -54,5 +55,60 @@ router.get('/', async (req, res) => {
     }
 });
 
+//get single service
+router.get('/:id', async (req, res) => {
+    try {
+        const id = parseInt(req.params.id, 10);
+        if (Number.isNaN(id)) return res.status(400).json({ message: 'Invalid service id' });
+        const service = await prisma.service.findUnique({ where: { id } });
+        if (!service) return res.status(404).json({ message: 'Service not found' });
+        res.json(service);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+//update service (admin only)
+router.put('/:id', auth, async (req, res) => {
+    try {
+        if (req.user.role !== 'admin') return res.status(403).json({ message: 'Forbidden' });
+        const id = parseInt(req.params.id, 10);
+        if (Number.isNaN(id)) return res.status(400).json({ message: 'Invalid service id' });
+        const { category, title, providerName, contactEmail, contactPhone, available, maxBookings } = req.body;
+        const service = await prisma.service.update({
+            where: { id },
+            data: {
+                ...(category !== undefined && { category }),
+                ...(title !== undefined && { title }),
+                ...(providerName !== undefined && { providerName }),
+                ...(contactEmail !== undefined && { contactEmail }),
+                ...(contactPhone !== undefined && { contactPhone }),
+                ...(available !== undefined && { available }),
+                ...(maxBookings !== undefined && { maxBookings }),
+            }
+        });
+        res.json(service);
+    } catch (err) {
+        if (err.code === 'P2025') return res.status(404).json({ message: 'Service not found' });
+        console.error(err);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+//delete service (admin only)
+router.delete('/:id', auth, async (req, res) => {
+    try {
+        if (req.user.role !== 'admin') return res.status(403).json({ message: 'Forbidden' });
+        const id = parseInt(req.params.id, 10);
+        if (Number.isNaN(id)) return res.status(400).json({ message: 'Invalid service id' });
+        await prisma.service.delete({ where: { id } });
+        res.json({ message: 'Service deleted' });
+    } catch (err) {
+        if (err.code === 'P2025') return res.status(404).json({ message: 'Service not found' });
+        console.error(err);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
 
 module.exports = router;

@@ -12,7 +12,8 @@ const Navbar = ({ role }: { role: string }) => {
 
   return (
     <nav className="nav">
-      <Link to="/dashboard">Dashboard</Link>
+      <Link to="/dashboard" className="nav-brand">Service Booking</Link>
+      <Link to="/dashboard">Services</Link>
       {role === "customer" && <Link to="/my-bookings">My Bookings</Link>}
       {role === "admin" && <Link to="/admin">Admin</Link>}
       <button type="button" className="btn-link" onClick={logout}>Logout</button>

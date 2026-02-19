@@ -27,6 +27,7 @@ const Signup = () => {
   return (
     <div className="auth-page">
       <div className="auth-card">
+        <h1 className="auth-title">Service Booking</h1>
         <h2>Signup</h2>
         {error && <p className="msg error">{error}</p>}
         <form onSubmit={handleSubmit}>

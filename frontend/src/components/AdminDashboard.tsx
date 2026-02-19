@@ -9,7 +9,7 @@ const CATEGORIES = [
 ];
 
 interface Service {
-  _id: string;
+  id: number;
   title: string;
   category: string;
   providerName: string;
@@ -17,12 +17,14 @@ interface Service {
   contactPhone: string;
   currentBookings: number;
   maxBookings: number;
+  available: boolean;
 }
 
 interface Booking {
-  _id: string;
-  user: { name: string; email: string; role?: string };
+  id: number;
+  user: { id: number; name: string; email: string; role?: string };
   service: Service;
+  createdAt: string;
 }
 
 const AdminDashboard = () => {
@@ -36,6 +38,7 @@ const AdminDashboard = () => {
     contactPhone: "",
     maxBookings: 5,
   });
+  const [editing, setEditing] = useState<Service | null>(null);
   const [msg, setMsg] = useState("");
 
   const fetchServices = async () => {
@@ -58,6 +61,7 @@ const AdminDashboard = () => {
 
   const handleAddService = async (e: React.FormEvent) => {
     e.preventDefault();
+    setMsg("");
     try {
       await api.post("/services", newService);
       setNewService({
@@ -75,6 +79,33 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleUpdateService = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editing) return;
+    setMsg("");
+    try {
+      await api.put(`/services/${editing.id}`, editing);
+      setMsg("Service updated");
+      setEditing(null);
+      fetchServices();
+    } catch (err: any) {
+      setMsg(err.response?.data?.message || "Update failed");
+    }
+  };
+
+  const handleDeleteService = async (id: number) => {
+    if (!confirm("Delete this service?")) return;
+    setMsg("");
+    try {
+      await api.delete(`/services/${id}`);
+      setMsg("Service deleted");
+      fetchServices();
+      fetchBookings();
+    } catch (err: any) {
+      setMsg(err.response?.data?.message || "Delete failed");
+    }
+  };
+
   useEffect(() => {
     fetchServices();
     fetchBookings();
@@ -84,9 +115,9 @@ const AdminDashboard = () => {
     <div className="container">
       <Navbar role="admin" />
       <h2>Admin Panel</h2>
-      {msg && <p className="msg">{msg}</p>}
+      {msg && <p className={`msg ${msg.includes("added") || msg.includes("updated") || msg.includes("deleted") ? "success" : "error"}`}>{msg}</p>}
 
-      <div className="card" style={{ marginBottom: 20 }}>
+      <div className="card add-form">
         <h3>Add Service</h3>
         <form onSubmit={handleAddService}>
           <input
@@ -125,29 +156,99 @@ const AdminDashboard = () => {
           <input
             type="number"
             placeholder="Max Bookings"
+            min={1}
             value={newService.maxBookings}
             onChange={(e) => setNewService({ ...newService, maxBookings: +e.target.value })}
           />
-          <button type="submit">Add Service</button>
+          <button type="submit" className="btn-primary">Add Service</button>
         </form>
       </div>
 
-      <h3>Services</h3>
-      {services.map((s) => (
-        <div key={s._id} className="card">
-          <h4>{s.title}</h4>
-          <p>Category: {s.category} | Provider: {s.providerName}</p>
-          <p>Bookings: {s.currentBookings}/{s.maxBookings}</p>
+      {editing && (
+        <div className="card add-form overlay-form">
+          <h3>Edit Service</h3>
+          <form onSubmit={handleUpdateService}>
+            <input
+              placeholder="Title"
+              value={editing.title}
+              onChange={(e) => setEditing({ ...editing, title: e.target.value })}
+              required
+            />
+            <select
+              value={editing.category}
+              onChange={(e) => setEditing({ ...editing, category: e.target.value })}
+            >
+              {CATEGORIES.map((c) => (
+                <option key={c} value={c}>{c}</option>
+              ))}
+            </select>
+            <input
+              placeholder="Provider Name"
+              value={editing.providerName}
+              onChange={(e) => setEditing({ ...editing, providerName: e.target.value })}
+              required
+            />
+            <input
+              placeholder="Contact Email"
+              type="email"
+              value={editing.contactEmail}
+              onChange={(e) => setEditing({ ...editing, contactEmail: e.target.value })}
+              required
+            />
+            <input
+              placeholder="Contact Phone"
+              value={editing.contactPhone}
+              onChange={(e) => setEditing({ ...editing, contactPhone: e.target.value })}
+              required
+            />
+            <input
+              type="number"
+              placeholder="Max Bookings"
+              min={1}
+              value={editing.maxBookings}
+              onChange={(e) => setEditing({ ...editing, maxBookings: +e.target.value })}
+            />
+            <div className="form-actions">
+              <button type="submit" className="btn-primary">Save</button>
+              <button type="button" className="btn-secondary" onClick={() => setEditing(null)}>Cancel</button>
+            </div>
+          </form>
         </div>
-      ))}
+      )}
+
+      <h3>Services</h3>
+      {services.length === 0 ? (
+        <p>No services yet. Add one above.</p>
+      ) : (
+        <div className="card-grid">
+          {services.map((s) => (
+            <div key={s.id} className="card">
+              <h4>{s.title}</h4>
+              <p className="meta">Category: {s.category} | Provider: {s.providerName}</p>
+              <p className="slots">Bookings: {s.currentBookings}/{s.maxBookings}</p>
+              <div className="card-actions">
+                <button className="btn-small" onClick={() => setEditing(s)}>Edit</button>
+                <button className="btn-small btn-danger" onClick={() => handleDeleteService(s.id)}>Delete</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
       <h3>All Bookings</h3>
-      {bookings.map((b) => (
-        <div key={b._id} className="card">
-          <p>User: {b.user?.name} ({b.user?.email})</p>
-          <p>Service: {b.service?.title}</p>
+      {bookings.length === 0 ? (
+        <p>No bookings yet.</p>
+      ) : (
+        <div className="card-grid">
+          {bookings.map((b) => (
+            <div key={b.id} className="card">
+              <p><strong>User:</strong> {b.user?.name} ({b.user?.email})</p>
+              <p><strong>Service:</strong> {b.service?.title}</p>
+              <p className="meta">{new Date(b.createdAt).toLocaleString()}</p>
+            </div>
+          ))}
         </div>
-      ))}
+      )}
     </div>
   );
 };

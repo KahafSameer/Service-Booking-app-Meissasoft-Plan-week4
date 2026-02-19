@@ -27,6 +27,7 @@ const Login = () => {
   return (
     <div className="auth-page">
       <div className="auth-card">
+        <h1 className="auth-title">Service Booking</h1>
         <h2>Login</h2>
         <form onSubmit={handleSubmit}>
           <input

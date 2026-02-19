@@ -1,9 +1,41 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
-// const Service = require('../models/Service'); // MongoDB model (now migrated to Prisma)
-// const Booking = require('../models/Booking'); // MongoDB model (now migrated to Prisma)
 const prisma = require('../lib/prisma');
+
+//get all bookings (admin only)
+router.get('/', auth, async (req, res) => {
+    try {
+        if (req.user.role !== 'admin') return res.status(403).json({ message: 'Forbidden' });
+        const bookings = await prisma.booking.findMany({
+            include: {
+                service: true,
+                user: { select: { id: true, name: true, email: true, role: true } }
+            },
+            orderBy: { createdAt: 'desc' }
+        });
+        res.json(bookings);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+//get my bookings (current user)
+router.get('/my', auth, async (req, res) => {
+    try {
+        const bookings = await prisma.booking.findMany({
+            where: { userId: req.user.id },
+            include: { service: true },
+            orderBy: { createdAt: 'desc' }
+        });
+        res.json(bookings);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
 router.post('/:serviceId', auth, async (req, res) => {
     const { serviceId } = req.params;
 
@@ -42,7 +74,7 @@ router.post('/:serviceId', auth, async (req, res) => {
                 },
                 include: {
                     service: true,
-                    user: true,
+                    user: { select: { id: true, name: true, email: true, role: true } },
                 },
             });
 
@@ -62,4 +94,29 @@ router.post('/:serviceId', auth, async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 });
+
+//cancel booking (user's own or admin)
+router.delete('/:bookingId', auth, async (req, res) => {
+    try {
+        const bookingId = parseInt(req.params.bookingId, 10);
+        if (Number.isNaN(bookingId)) return res.status(400).json({ message: 'Invalid booking id' });
+        const booking = await prisma.booking.findUnique({ where: { id: bookingId }, include: { service: true } });
+        if (!booking) return res.status(404).json({ message: 'Booking not found' });
+        if (req.user.role !== 'admin' && booking.userId !== req.user.id) {
+            return res.status(403).json({ message: 'Forbidden' });
+        }
+        await prisma.$transaction(async (tx) => {
+            await tx.booking.delete({ where: { id: bookingId } });
+            await tx.service.update({
+                where: { id: booking.serviceId },
+                data: { currentBookings: { decrement: 1 } }
+            });
+        });
+        res.json({ message: 'Booking cancelled' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
 module.exports = router;
