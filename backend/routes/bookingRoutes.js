@@ -1,39 +1,62 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
-const Service = require('../models/Service');
-const Booking = require('../models/Booking');
+// const Service = require('../models/Service'); // MongoDB model (now migrated to Prisma)
+// const Booking = require('../models/Booking'); // MongoDB model (now migrated to Prisma)
+const prisma = require('../lib/prisma');
 router.post('/:serviceId', auth, async (req, res) => {
     const { serviceId } = req.params;
 
+    const parsedServiceId = parseInt(serviceId, 10);
+    if (Number.isNaN(parsedServiceId)) {
+        return res.status(400).json({ message: 'Invalid service id' });
+    }
+
     try {
-        const service = await Service.findById(serviceId);
+        const result = await prisma.$transaction(async (tx) => {
+            const service = await tx.service.findUnique({
+                where: { id: parsedServiceId },
+            });
 
-        if (!service) {
-            return res.status(404).json({ message: 'Service not found' });
-        }
+            if (!service) {
+                return { error: { status: 404, message: 'Service not found' } };
+            }
 
-        if (service.currentBookings >= service.maxBookings) {
-            return res.status(400).json({ message: 'Service is fully booked' });
-        }
+            if (service.currentBookings >= service.maxBookings) {
+                return { error: { status: 400, message: 'Service is fully booked' } };
+            }
 
-        //++
-        service.currentBookings += 1;
-        await service.save();
+            const updatedService = await tx.service.update({
+                where: { id: parsedServiceId },
+                data: {
+                    currentBookings: {
+                        increment: 1,
+                    },
+                },
+            });
 
-        
-        const booking = new Booking({
-            service: serviceId,
-            user: req.user.id
+            const booking = await tx.booking.create({
+                data: {
+                    serviceId: parsedServiceId,
+                    userId: req.user.id,
+                },
+                include: {
+                    service: true,
+                    user: true,
+                },
+            });
+
+            return { updatedService, booking };
         });
 
-        await booking.save();
+        if (result.error) {
+            return res.status(result.error.status).json({ message: result.error.message });
+        }
 
         res.status(201).json({
             message: 'Booking created successfully',
-            booking
+            booking: result.booking,
         });
-
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Server error' });
