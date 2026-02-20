@@ -18,9 +18,9 @@ router.post('/:serviceId', auth, async (req, res) => {
     }
 
     try {
-       const service = await prisma.service.findUnique({
-    where: { id: parsedServiceId } // MySQL id is Int
-});
+        const service = await prisma.service.findUnique({
+            where: { id: parsedServiceId } // MySQL id is Int
+        });
 
 
         if (!service) {
@@ -35,8 +35,8 @@ router.post('/:serviceId', auth, async (req, res) => {
         // service.currentBookings += 1;
         // await service.save();
 
-                await prisma.service.update({
-            where: {id: parsedServiceId},
+        await prisma.service.update({
+            where: { id: parsedServiceId },
             data: {
                 currentBookings: {
                     increment: 1
@@ -45,7 +45,7 @@ router.post('/:serviceId', auth, async (req, res) => {
         })
 
 
-        
+
         // const booking = new Booking({
         //     service: serviceId,
         //     user: req.user.id
@@ -53,12 +53,12 @@ router.post('/:serviceId', auth, async (req, res) => {
 
         // await booking.save();
 
-const booking = await prisma.booking.create({
-    data: {
-        serviceId: parsedServiceId,
-        userId: parseInt(req.user.id)
-    }
-});
+        const booking = await prisma.booking.create({
+            data: {
+                serviceId: parsedServiceId,
+                userId: parseInt(req.user.id)
+            }
+        });
 
 
         res.status(201).json({
@@ -84,4 +84,6 @@ router.get('/my', auth, async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 });
+
+
 export default router;
