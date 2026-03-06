@@ -147,7 +147,16 @@ exports.Prisma.BookingScalarFieldEnum = {
   serviceId: 'serviceId',
   userId: 'userId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  status: 'status'
+};
+
+exports.Prisma.TimeSlotScalarFieldEnum = {
+  id: 'id',
+  serviceId: 'serviceId',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  isBooked: 'isBooked'
 };
 
 exports.Prisma.SortOrder = {
@@ -166,6 +175,10 @@ exports.Prisma.ServiceOrderByRelevanceFieldEnum = {
   providerName: 'providerName',
   contactEmail: 'contactEmail',
   contactPhone: 'contactPhone'
+};
+
+exports.Prisma.BookingOrderByRelevanceFieldEnum = {
+  status: 'status'
 };
 exports.Role = exports.$Enums.Role = {
   customer: 'customer',
@@ -187,7 +200,8 @@ exports.Category = exports.$Enums.Category = {
 exports.Prisma.ModelName = {
   User: 'User',
   Service: 'Service',
-  Booking: 'Booking'
+  Booking: 'Booking',
+  TimeSlot: 'TimeSlot'
 };
 
 /**

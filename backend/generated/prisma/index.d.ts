@@ -28,6 +28,11 @@ export type Service = $Result.DefaultSelection<Prisma.$ServicePayload>
  * 
  */
 export type Booking = $Result.DefaultSelection<Prisma.$BookingPayload>
+/**
+ * Model TimeSlot
+ * 
+ */
+export type TimeSlot = $Result.DefaultSelection<Prisma.$TimeSlotPayload>
 
 /**
  * Enums
@@ -211,6 +216,16 @@ export class PrismaClient<
     * ```
     */
   get booking(): Prisma.BookingDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.timeSlot`: Exposes CRUD operations for the **TimeSlot** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TimeSlots
+    * const timeSlots = await prisma.timeSlot.findMany()
+    * ```
+    */
+  get timeSlot(): Prisma.TimeSlotDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -647,7 +662,8 @@ export namespace Prisma {
   export const ModelName: {
     User: 'User',
     Service: 'Service',
-    Booking: 'Booking'
+    Booking: 'Booking',
+    TimeSlot: 'TimeSlot'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -663,7 +679,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "service" | "booking"
+      modelProps: "user" | "service" | "booking" | "timeSlot"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -865,6 +881,72 @@ export namespace Prisma {
           }
         }
       }
+      TimeSlot: {
+        payload: Prisma.$TimeSlotPayload<ExtArgs>
+        fields: Prisma.TimeSlotFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TimeSlotFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimeSlotPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TimeSlotFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimeSlotPayload>
+          }
+          findFirst: {
+            args: Prisma.TimeSlotFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimeSlotPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TimeSlotFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimeSlotPayload>
+          }
+          findMany: {
+            args: Prisma.TimeSlotFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimeSlotPayload>[]
+          }
+          create: {
+            args: Prisma.TimeSlotCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimeSlotPayload>
+          }
+          createMany: {
+            args: Prisma.TimeSlotCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.TimeSlotDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimeSlotPayload>
+          }
+          update: {
+            args: Prisma.TimeSlotUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimeSlotPayload>
+          }
+          deleteMany: {
+            args: Prisma.TimeSlotDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TimeSlotUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.TimeSlotUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimeSlotPayload>
+          }
+          aggregate: {
+            args: Prisma.TimeSlotAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTimeSlot>
+          }
+          groupBy: {
+            args: Prisma.TimeSlotGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TimeSlotGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TimeSlotCountArgs<ExtArgs>
+            result: $Utils.Optional<TimeSlotCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -976,6 +1058,7 @@ export namespace Prisma {
     user?: UserOmit
     service?: ServiceOmit
     booking?: BookingOmit
+    timeSlot?: TimeSlotOmit
   }
 
   /* Types for Logging */
@@ -1088,10 +1171,12 @@ export namespace Prisma {
 
   export type ServiceCountOutputType = {
     bookings: number
+    timeSlots: number
   }
 
   export type ServiceCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     bookings?: boolean | ServiceCountOutputTypeCountBookingsArgs
+    timeSlots?: boolean | ServiceCountOutputTypeCountTimeSlotsArgs
   }
 
   // Custom InputTypes
@@ -1110,6 +1195,13 @@ export namespace Prisma {
    */
   export type ServiceCountOutputTypeCountBookingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: BookingWhereInput
+  }
+
+  /**
+   * ServiceCountOutputType without action
+   */
+  export type ServiceCountOutputTypeCountTimeSlotsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TimeSlotWhereInput
   }
 
 
@@ -2361,6 +2453,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     bookings?: boolean | Service$bookingsArgs<ExtArgs>
+    timeSlots?: boolean | Service$timeSlotsArgs<ExtArgs>
     _count?: boolean | ServiceCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["service"]>
 
@@ -2383,6 +2476,7 @@ export namespace Prisma {
   export type ServiceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "category" | "title" | "providerName" | "contactEmail" | "contactPhone" | "available" | "maxBookings" | "currentBookings" | "createdAt" | "updatedAt", ExtArgs["result"]["service"]>
   export type ServiceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     bookings?: boolean | Service$bookingsArgs<ExtArgs>
+    timeSlots?: boolean | Service$timeSlotsArgs<ExtArgs>
     _count?: boolean | ServiceCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -2390,6 +2484,7 @@ export namespace Prisma {
     name: "Service"
     objects: {
       bookings: Prisma.$BookingPayload<ExtArgs>[]
+      timeSlots: Prisma.$TimeSlotPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -2744,6 +2839,7 @@ export namespace Prisma {
   export interface Prisma__ServiceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     bookings<T extends Service$bookingsArgs<ExtArgs> = {}>(args?: Subset<T, Service$bookingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    timeSlots<T extends Service$timeSlotsArgs<ExtArgs> = {}>(args?: Subset<T, Service$timeSlotsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TimeSlotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3151,6 +3247,30 @@ export namespace Prisma {
   }
 
   /**
+   * Service.timeSlots
+   */
+  export type Service$timeSlotsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimeSlot
+     */
+    select?: TimeSlotSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimeSlot
+     */
+    omit?: TimeSlotOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimeSlotInclude<ExtArgs> | null
+    where?: TimeSlotWhereInput
+    orderBy?: TimeSlotOrderByWithRelationInput | TimeSlotOrderByWithRelationInput[]
+    cursor?: TimeSlotWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TimeSlotScalarFieldEnum | TimeSlotScalarFieldEnum[]
+  }
+
+  /**
    * Service without action
    */
   export type ServiceDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3199,6 +3319,7 @@ export namespace Prisma {
     userId: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    status: string | null
   }
 
   export type BookingMaxAggregateOutputType = {
@@ -3207,6 +3328,7 @@ export namespace Prisma {
     userId: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    status: string | null
   }
 
   export type BookingCountAggregateOutputType = {
@@ -3215,6 +3337,7 @@ export namespace Prisma {
     userId: number
     createdAt: number
     updatedAt: number
+    status: number
     _all: number
   }
 
@@ -3237,6 +3360,7 @@ export namespace Prisma {
     userId?: true
     createdAt?: true
     updatedAt?: true
+    status?: true
   }
 
   export type BookingMaxAggregateInputType = {
@@ -3245,6 +3369,7 @@ export namespace Prisma {
     userId?: true
     createdAt?: true
     updatedAt?: true
+    status?: true
   }
 
   export type BookingCountAggregateInputType = {
@@ -3253,6 +3378,7 @@ export namespace Prisma {
     userId?: true
     createdAt?: true
     updatedAt?: true
+    status?: true
     _all?: true
   }
 
@@ -3348,6 +3474,7 @@ export namespace Prisma {
     userId: number
     createdAt: Date
     updatedAt: Date
+    status: string
     _count: BookingCountAggregateOutputType | null
     _avg: BookingAvgAggregateOutputType | null
     _sum: BookingSumAggregateOutputType | null
@@ -3375,6 +3502,7 @@ export namespace Prisma {
     userId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    status?: boolean
     service?: boolean | ServiceDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["booking"]>
@@ -3387,9 +3515,10 @@ export namespace Prisma {
     userId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    status?: boolean
   }
 
-  export type BookingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "serviceId" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["booking"]>
+  export type BookingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "serviceId" | "userId" | "createdAt" | "updatedAt" | "status", ExtArgs["result"]["booking"]>
   export type BookingInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     service?: boolean | ServiceDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -3407,6 +3536,7 @@ export namespace Prisma {
       userId: number
       createdAt: Date
       updatedAt: Date
+      status: string
     }, ExtArgs["result"]["booking"]>
     composites: {}
   }
@@ -3783,6 +3913,7 @@ export namespace Prisma {
     readonly userId: FieldRef<"Booking", 'Int'>
     readonly createdAt: FieldRef<"Booking", 'DateTime'>
     readonly updatedAt: FieldRef<"Booking", 'DateTime'>
+    readonly status: FieldRef<"Booking", 'String'>
   }
     
 
@@ -4145,6 +4276,973 @@ export namespace Prisma {
 
 
   /**
+   * Model TimeSlot
+   */
+
+  export type AggregateTimeSlot = {
+    _count: TimeSlotCountAggregateOutputType | null
+    _avg: TimeSlotAvgAggregateOutputType | null
+    _sum: TimeSlotSumAggregateOutputType | null
+    _min: TimeSlotMinAggregateOutputType | null
+    _max: TimeSlotMaxAggregateOutputType | null
+  }
+
+  export type TimeSlotAvgAggregateOutputType = {
+    id: number | null
+    serviceId: number | null
+  }
+
+  export type TimeSlotSumAggregateOutputType = {
+    id: number | null
+    serviceId: number | null
+  }
+
+  export type TimeSlotMinAggregateOutputType = {
+    id: number | null
+    serviceId: number | null
+    startTime: Date | null
+    endTime: Date | null
+    isBooked: boolean | null
+  }
+
+  export type TimeSlotMaxAggregateOutputType = {
+    id: number | null
+    serviceId: number | null
+    startTime: Date | null
+    endTime: Date | null
+    isBooked: boolean | null
+  }
+
+  export type TimeSlotCountAggregateOutputType = {
+    id: number
+    serviceId: number
+    startTime: number
+    endTime: number
+    isBooked: number
+    _all: number
+  }
+
+
+  export type TimeSlotAvgAggregateInputType = {
+    id?: true
+    serviceId?: true
+  }
+
+  export type TimeSlotSumAggregateInputType = {
+    id?: true
+    serviceId?: true
+  }
+
+  export type TimeSlotMinAggregateInputType = {
+    id?: true
+    serviceId?: true
+    startTime?: true
+    endTime?: true
+    isBooked?: true
+  }
+
+  export type TimeSlotMaxAggregateInputType = {
+    id?: true
+    serviceId?: true
+    startTime?: true
+    endTime?: true
+    isBooked?: true
+  }
+
+  export type TimeSlotCountAggregateInputType = {
+    id?: true
+    serviceId?: true
+    startTime?: true
+    endTime?: true
+    isBooked?: true
+    _all?: true
+  }
+
+  export type TimeSlotAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TimeSlot to aggregate.
+     */
+    where?: TimeSlotWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TimeSlots to fetch.
+     */
+    orderBy?: TimeSlotOrderByWithRelationInput | TimeSlotOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TimeSlotWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TimeSlots from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TimeSlots.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TimeSlots
+    **/
+    _count?: true | TimeSlotCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: TimeSlotAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TimeSlotSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TimeSlotMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TimeSlotMaxAggregateInputType
+  }
+
+  export type GetTimeSlotAggregateType<T extends TimeSlotAggregateArgs> = {
+        [P in keyof T & keyof AggregateTimeSlot]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTimeSlot[P]>
+      : GetScalarType<T[P], AggregateTimeSlot[P]>
+  }
+
+
+
+
+  export type TimeSlotGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TimeSlotWhereInput
+    orderBy?: TimeSlotOrderByWithAggregationInput | TimeSlotOrderByWithAggregationInput[]
+    by: TimeSlotScalarFieldEnum[] | TimeSlotScalarFieldEnum
+    having?: TimeSlotScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TimeSlotCountAggregateInputType | true
+    _avg?: TimeSlotAvgAggregateInputType
+    _sum?: TimeSlotSumAggregateInputType
+    _min?: TimeSlotMinAggregateInputType
+    _max?: TimeSlotMaxAggregateInputType
+  }
+
+  export type TimeSlotGroupByOutputType = {
+    id: number
+    serviceId: number
+    startTime: Date
+    endTime: Date
+    isBooked: boolean
+    _count: TimeSlotCountAggregateOutputType | null
+    _avg: TimeSlotAvgAggregateOutputType | null
+    _sum: TimeSlotSumAggregateOutputType | null
+    _min: TimeSlotMinAggregateOutputType | null
+    _max: TimeSlotMaxAggregateOutputType | null
+  }
+
+  type GetTimeSlotGroupByPayload<T extends TimeSlotGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TimeSlotGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TimeSlotGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TimeSlotGroupByOutputType[P]>
+            : GetScalarType<T[P], TimeSlotGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TimeSlotSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    serviceId?: boolean
+    startTime?: boolean
+    endTime?: boolean
+    isBooked?: boolean
+    service?: boolean | ServiceDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["timeSlot"]>
+
+
+
+  export type TimeSlotSelectScalar = {
+    id?: boolean
+    serviceId?: boolean
+    startTime?: boolean
+    endTime?: boolean
+    isBooked?: boolean
+  }
+
+  export type TimeSlotOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "serviceId" | "startTime" | "endTime" | "isBooked", ExtArgs["result"]["timeSlot"]>
+  export type TimeSlotInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    service?: boolean | ServiceDefaultArgs<ExtArgs>
+  }
+
+  export type $TimeSlotPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TimeSlot"
+    objects: {
+      service: Prisma.$ServicePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      serviceId: number
+      startTime: Date
+      endTime: Date
+      isBooked: boolean
+    }, ExtArgs["result"]["timeSlot"]>
+    composites: {}
+  }
+
+  type TimeSlotGetPayload<S extends boolean | null | undefined | TimeSlotDefaultArgs> = $Result.GetResult<Prisma.$TimeSlotPayload, S>
+
+  type TimeSlotCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TimeSlotFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TimeSlotCountAggregateInputType | true
+    }
+
+  export interface TimeSlotDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TimeSlot'], meta: { name: 'TimeSlot' } }
+    /**
+     * Find zero or one TimeSlot that matches the filter.
+     * @param {TimeSlotFindUniqueArgs} args - Arguments to find a TimeSlot
+     * @example
+     * // Get one TimeSlot
+     * const timeSlot = await prisma.timeSlot.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TimeSlotFindUniqueArgs>(args: SelectSubset<T, TimeSlotFindUniqueArgs<ExtArgs>>): Prisma__TimeSlotClient<$Result.GetResult<Prisma.$TimeSlotPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one TimeSlot that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TimeSlotFindUniqueOrThrowArgs} args - Arguments to find a TimeSlot
+     * @example
+     * // Get one TimeSlot
+     * const timeSlot = await prisma.timeSlot.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TimeSlotFindUniqueOrThrowArgs>(args: SelectSubset<T, TimeSlotFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TimeSlotClient<$Result.GetResult<Prisma.$TimeSlotPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TimeSlot that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TimeSlotFindFirstArgs} args - Arguments to find a TimeSlot
+     * @example
+     * // Get one TimeSlot
+     * const timeSlot = await prisma.timeSlot.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TimeSlotFindFirstArgs>(args?: SelectSubset<T, TimeSlotFindFirstArgs<ExtArgs>>): Prisma__TimeSlotClient<$Result.GetResult<Prisma.$TimeSlotPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TimeSlot that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TimeSlotFindFirstOrThrowArgs} args - Arguments to find a TimeSlot
+     * @example
+     * // Get one TimeSlot
+     * const timeSlot = await prisma.timeSlot.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TimeSlotFindFirstOrThrowArgs>(args?: SelectSubset<T, TimeSlotFindFirstOrThrowArgs<ExtArgs>>): Prisma__TimeSlotClient<$Result.GetResult<Prisma.$TimeSlotPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TimeSlots that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TimeSlotFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TimeSlots
+     * const timeSlots = await prisma.timeSlot.findMany()
+     * 
+     * // Get first 10 TimeSlots
+     * const timeSlots = await prisma.timeSlot.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const timeSlotWithIdOnly = await prisma.timeSlot.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TimeSlotFindManyArgs>(args?: SelectSubset<T, TimeSlotFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TimeSlotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a TimeSlot.
+     * @param {TimeSlotCreateArgs} args - Arguments to create a TimeSlot.
+     * @example
+     * // Create one TimeSlot
+     * const TimeSlot = await prisma.timeSlot.create({
+     *   data: {
+     *     // ... data to create a TimeSlot
+     *   }
+     * })
+     * 
+     */
+    create<T extends TimeSlotCreateArgs>(args: SelectSubset<T, TimeSlotCreateArgs<ExtArgs>>): Prisma__TimeSlotClient<$Result.GetResult<Prisma.$TimeSlotPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many TimeSlots.
+     * @param {TimeSlotCreateManyArgs} args - Arguments to create many TimeSlots.
+     * @example
+     * // Create many TimeSlots
+     * const timeSlot = await prisma.timeSlot.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TimeSlotCreateManyArgs>(args?: SelectSubset<T, TimeSlotCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a TimeSlot.
+     * @param {TimeSlotDeleteArgs} args - Arguments to delete one TimeSlot.
+     * @example
+     * // Delete one TimeSlot
+     * const TimeSlot = await prisma.timeSlot.delete({
+     *   where: {
+     *     // ... filter to delete one TimeSlot
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TimeSlotDeleteArgs>(args: SelectSubset<T, TimeSlotDeleteArgs<ExtArgs>>): Prisma__TimeSlotClient<$Result.GetResult<Prisma.$TimeSlotPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one TimeSlot.
+     * @param {TimeSlotUpdateArgs} args - Arguments to update one TimeSlot.
+     * @example
+     * // Update one TimeSlot
+     * const timeSlot = await prisma.timeSlot.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TimeSlotUpdateArgs>(args: SelectSubset<T, TimeSlotUpdateArgs<ExtArgs>>): Prisma__TimeSlotClient<$Result.GetResult<Prisma.$TimeSlotPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more TimeSlots.
+     * @param {TimeSlotDeleteManyArgs} args - Arguments to filter TimeSlots to delete.
+     * @example
+     * // Delete a few TimeSlots
+     * const { count } = await prisma.timeSlot.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TimeSlotDeleteManyArgs>(args?: SelectSubset<T, TimeSlotDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TimeSlots.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TimeSlotUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TimeSlots
+     * const timeSlot = await prisma.timeSlot.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TimeSlotUpdateManyArgs>(args: SelectSubset<T, TimeSlotUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one TimeSlot.
+     * @param {TimeSlotUpsertArgs} args - Arguments to update or create a TimeSlot.
+     * @example
+     * // Update or create a TimeSlot
+     * const timeSlot = await prisma.timeSlot.upsert({
+     *   create: {
+     *     // ... data to create a TimeSlot
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TimeSlot we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TimeSlotUpsertArgs>(args: SelectSubset<T, TimeSlotUpsertArgs<ExtArgs>>): Prisma__TimeSlotClient<$Result.GetResult<Prisma.$TimeSlotPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of TimeSlots.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TimeSlotCountArgs} args - Arguments to filter TimeSlots to count.
+     * @example
+     * // Count the number of TimeSlots
+     * const count = await prisma.timeSlot.count({
+     *   where: {
+     *     // ... the filter for the TimeSlots we want to count
+     *   }
+     * })
+    **/
+    count<T extends TimeSlotCountArgs>(
+      args?: Subset<T, TimeSlotCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TimeSlotCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TimeSlot.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TimeSlotAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TimeSlotAggregateArgs>(args: Subset<T, TimeSlotAggregateArgs>): Prisma.PrismaPromise<GetTimeSlotAggregateType<T>>
+
+    /**
+     * Group by TimeSlot.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TimeSlotGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TimeSlotGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TimeSlotGroupByArgs['orderBy'] }
+        : { orderBy?: TimeSlotGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TimeSlotGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTimeSlotGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TimeSlot model
+   */
+  readonly fields: TimeSlotFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TimeSlot.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TimeSlotClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    service<T extends ServiceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ServiceDefaultArgs<ExtArgs>>): Prisma__ServiceClient<$Result.GetResult<Prisma.$ServicePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TimeSlot model
+   */
+  interface TimeSlotFieldRefs {
+    readonly id: FieldRef<"TimeSlot", 'Int'>
+    readonly serviceId: FieldRef<"TimeSlot", 'Int'>
+    readonly startTime: FieldRef<"TimeSlot", 'DateTime'>
+    readonly endTime: FieldRef<"TimeSlot", 'DateTime'>
+    readonly isBooked: FieldRef<"TimeSlot", 'Boolean'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TimeSlot findUnique
+   */
+  export type TimeSlotFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimeSlot
+     */
+    select?: TimeSlotSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimeSlot
+     */
+    omit?: TimeSlotOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimeSlotInclude<ExtArgs> | null
+    /**
+     * Filter, which TimeSlot to fetch.
+     */
+    where: TimeSlotWhereUniqueInput
+  }
+
+  /**
+   * TimeSlot findUniqueOrThrow
+   */
+  export type TimeSlotFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimeSlot
+     */
+    select?: TimeSlotSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimeSlot
+     */
+    omit?: TimeSlotOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimeSlotInclude<ExtArgs> | null
+    /**
+     * Filter, which TimeSlot to fetch.
+     */
+    where: TimeSlotWhereUniqueInput
+  }
+
+  /**
+   * TimeSlot findFirst
+   */
+  export type TimeSlotFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimeSlot
+     */
+    select?: TimeSlotSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimeSlot
+     */
+    omit?: TimeSlotOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimeSlotInclude<ExtArgs> | null
+    /**
+     * Filter, which TimeSlot to fetch.
+     */
+    where?: TimeSlotWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TimeSlots to fetch.
+     */
+    orderBy?: TimeSlotOrderByWithRelationInput | TimeSlotOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TimeSlots.
+     */
+    cursor?: TimeSlotWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TimeSlots from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TimeSlots.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TimeSlots.
+     */
+    distinct?: TimeSlotScalarFieldEnum | TimeSlotScalarFieldEnum[]
+  }
+
+  /**
+   * TimeSlot findFirstOrThrow
+   */
+  export type TimeSlotFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimeSlot
+     */
+    select?: TimeSlotSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimeSlot
+     */
+    omit?: TimeSlotOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimeSlotInclude<ExtArgs> | null
+    /**
+     * Filter, which TimeSlot to fetch.
+     */
+    where?: TimeSlotWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TimeSlots to fetch.
+     */
+    orderBy?: TimeSlotOrderByWithRelationInput | TimeSlotOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TimeSlots.
+     */
+    cursor?: TimeSlotWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TimeSlots from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TimeSlots.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TimeSlots.
+     */
+    distinct?: TimeSlotScalarFieldEnum | TimeSlotScalarFieldEnum[]
+  }
+
+  /**
+   * TimeSlot findMany
+   */
+  export type TimeSlotFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimeSlot
+     */
+    select?: TimeSlotSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimeSlot
+     */
+    omit?: TimeSlotOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimeSlotInclude<ExtArgs> | null
+    /**
+     * Filter, which TimeSlots to fetch.
+     */
+    where?: TimeSlotWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TimeSlots to fetch.
+     */
+    orderBy?: TimeSlotOrderByWithRelationInput | TimeSlotOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TimeSlots.
+     */
+    cursor?: TimeSlotWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TimeSlots from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TimeSlots.
+     */
+    skip?: number
+    distinct?: TimeSlotScalarFieldEnum | TimeSlotScalarFieldEnum[]
+  }
+
+  /**
+   * TimeSlot create
+   */
+  export type TimeSlotCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimeSlot
+     */
+    select?: TimeSlotSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimeSlot
+     */
+    omit?: TimeSlotOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimeSlotInclude<ExtArgs> | null
+    /**
+     * The data needed to create a TimeSlot.
+     */
+    data: XOR<TimeSlotCreateInput, TimeSlotUncheckedCreateInput>
+  }
+
+  /**
+   * TimeSlot createMany
+   */
+  export type TimeSlotCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TimeSlots.
+     */
+    data: TimeSlotCreateManyInput | TimeSlotCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TimeSlot update
+   */
+  export type TimeSlotUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimeSlot
+     */
+    select?: TimeSlotSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimeSlot
+     */
+    omit?: TimeSlotOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimeSlotInclude<ExtArgs> | null
+    /**
+     * The data needed to update a TimeSlot.
+     */
+    data: XOR<TimeSlotUpdateInput, TimeSlotUncheckedUpdateInput>
+    /**
+     * Choose, which TimeSlot to update.
+     */
+    where: TimeSlotWhereUniqueInput
+  }
+
+  /**
+   * TimeSlot updateMany
+   */
+  export type TimeSlotUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TimeSlots.
+     */
+    data: XOR<TimeSlotUpdateManyMutationInput, TimeSlotUncheckedUpdateManyInput>
+    /**
+     * Filter which TimeSlots to update
+     */
+    where?: TimeSlotWhereInput
+    /**
+     * Limit how many TimeSlots to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TimeSlot upsert
+   */
+  export type TimeSlotUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimeSlot
+     */
+    select?: TimeSlotSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimeSlot
+     */
+    omit?: TimeSlotOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimeSlotInclude<ExtArgs> | null
+    /**
+     * The filter to search for the TimeSlot to update in case it exists.
+     */
+    where: TimeSlotWhereUniqueInput
+    /**
+     * In case the TimeSlot found by the `where` argument doesn't exist, create a new TimeSlot with this data.
+     */
+    create: XOR<TimeSlotCreateInput, TimeSlotUncheckedCreateInput>
+    /**
+     * In case the TimeSlot was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TimeSlotUpdateInput, TimeSlotUncheckedUpdateInput>
+  }
+
+  /**
+   * TimeSlot delete
+   */
+  export type TimeSlotDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimeSlot
+     */
+    select?: TimeSlotSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimeSlot
+     */
+    omit?: TimeSlotOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimeSlotInclude<ExtArgs> | null
+    /**
+     * Filter which TimeSlot to delete.
+     */
+    where: TimeSlotWhereUniqueInput
+  }
+
+  /**
+   * TimeSlot deleteMany
+   */
+  export type TimeSlotDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TimeSlots to delete
+     */
+    where?: TimeSlotWhereInput
+    /**
+     * Limit how many TimeSlots to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * TimeSlot without action
+   */
+  export type TimeSlotDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimeSlot
+     */
+    select?: TimeSlotSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimeSlot
+     */
+    omit?: TimeSlotOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimeSlotInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -4191,10 +5289,22 @@ export namespace Prisma {
     serviceId: 'serviceId',
     userId: 'userId',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    status: 'status'
   };
 
   export type BookingScalarFieldEnum = (typeof BookingScalarFieldEnum)[keyof typeof BookingScalarFieldEnum]
+
+
+  export const TimeSlotScalarFieldEnum: {
+    id: 'id',
+    serviceId: 'serviceId',
+    startTime: 'startTime',
+    endTime: 'endTime',
+    isBooked: 'isBooked'
+  };
+
+  export type TimeSlotScalarFieldEnum = (typeof TimeSlotScalarFieldEnum)[keyof typeof TimeSlotScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -4222,6 +5332,13 @@ export namespace Prisma {
   };
 
   export type ServiceOrderByRelevanceFieldEnum = (typeof ServiceOrderByRelevanceFieldEnum)[keyof typeof ServiceOrderByRelevanceFieldEnum]
+
+
+  export const BookingOrderByRelevanceFieldEnum: {
+    status: 'status'
+  };
+
+  export type BookingOrderByRelevanceFieldEnum = (typeof BookingOrderByRelevanceFieldEnum)[keyof typeof BookingOrderByRelevanceFieldEnum]
 
 
   /**
@@ -4355,6 +5472,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Service"> | Date | string
     updatedAt?: DateTimeFilter<"Service"> | Date | string
     bookings?: BookingListRelationFilter
+    timeSlots?: TimeSlotListRelationFilter
   }
 
   export type ServiceOrderByWithRelationInput = {
@@ -4370,6 +5488,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     bookings?: BookingOrderByRelationAggregateInput
+    timeSlots?: TimeSlotOrderByRelationAggregateInput
     _relevance?: ServiceOrderByRelevanceInput
   }
 
@@ -4389,6 +5508,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Service"> | Date | string
     updatedAt?: DateTimeFilter<"Service"> | Date | string
     bookings?: BookingListRelationFilter
+    timeSlots?: TimeSlotListRelationFilter
   }, "id">
 
   export type ServiceOrderByWithAggregationInput = {
@@ -4436,6 +5556,7 @@ export namespace Prisma {
     userId?: IntFilter<"Booking"> | number
     createdAt?: DateTimeFilter<"Booking"> | Date | string
     updatedAt?: DateTimeFilter<"Booking"> | Date | string
+    status?: StringFilter<"Booking"> | string
     service?: XOR<ServiceScalarRelationFilter, ServiceWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
@@ -4446,8 +5567,10 @@ export namespace Prisma {
     userId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    status?: SortOrder
     service?: ServiceOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
+    _relevance?: BookingOrderByRelevanceInput
   }
 
   export type BookingWhereUniqueInput = Prisma.AtLeast<{
@@ -4459,6 +5582,7 @@ export namespace Prisma {
     userId?: IntFilter<"Booking"> | number
     createdAt?: DateTimeFilter<"Booking"> | Date | string
     updatedAt?: DateTimeFilter<"Booking"> | Date | string
+    status?: StringFilter<"Booking"> | string
     service?: XOR<ServiceScalarRelationFilter, ServiceWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
@@ -4469,6 +5593,7 @@ export namespace Prisma {
     userId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    status?: SortOrder
     _count?: BookingCountOrderByAggregateInput
     _avg?: BookingAvgOrderByAggregateInput
     _max?: BookingMaxOrderByAggregateInput
@@ -4485,6 +5610,64 @@ export namespace Prisma {
     userId?: IntWithAggregatesFilter<"Booking"> | number
     createdAt?: DateTimeWithAggregatesFilter<"Booking"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Booking"> | Date | string
+    status?: StringWithAggregatesFilter<"Booking"> | string
+  }
+
+  export type TimeSlotWhereInput = {
+    AND?: TimeSlotWhereInput | TimeSlotWhereInput[]
+    OR?: TimeSlotWhereInput[]
+    NOT?: TimeSlotWhereInput | TimeSlotWhereInput[]
+    id?: IntFilter<"TimeSlot"> | number
+    serviceId?: IntFilter<"TimeSlot"> | number
+    startTime?: DateTimeFilter<"TimeSlot"> | Date | string
+    endTime?: DateTimeFilter<"TimeSlot"> | Date | string
+    isBooked?: BoolFilter<"TimeSlot"> | boolean
+    service?: XOR<ServiceScalarRelationFilter, ServiceWhereInput>
+  }
+
+  export type TimeSlotOrderByWithRelationInput = {
+    id?: SortOrder
+    serviceId?: SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    isBooked?: SortOrder
+    service?: ServiceOrderByWithRelationInput
+  }
+
+  export type TimeSlotWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: TimeSlotWhereInput | TimeSlotWhereInput[]
+    OR?: TimeSlotWhereInput[]
+    NOT?: TimeSlotWhereInput | TimeSlotWhereInput[]
+    serviceId?: IntFilter<"TimeSlot"> | number
+    startTime?: DateTimeFilter<"TimeSlot"> | Date | string
+    endTime?: DateTimeFilter<"TimeSlot"> | Date | string
+    isBooked?: BoolFilter<"TimeSlot"> | boolean
+    service?: XOR<ServiceScalarRelationFilter, ServiceWhereInput>
+  }, "id">
+
+  export type TimeSlotOrderByWithAggregationInput = {
+    id?: SortOrder
+    serviceId?: SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    isBooked?: SortOrder
+    _count?: TimeSlotCountOrderByAggregateInput
+    _avg?: TimeSlotAvgOrderByAggregateInput
+    _max?: TimeSlotMaxOrderByAggregateInput
+    _min?: TimeSlotMinOrderByAggregateInput
+    _sum?: TimeSlotSumOrderByAggregateInput
+  }
+
+  export type TimeSlotScalarWhereWithAggregatesInput = {
+    AND?: TimeSlotScalarWhereWithAggregatesInput | TimeSlotScalarWhereWithAggregatesInput[]
+    OR?: TimeSlotScalarWhereWithAggregatesInput[]
+    NOT?: TimeSlotScalarWhereWithAggregatesInput | TimeSlotScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"TimeSlot"> | number
+    serviceId?: IntWithAggregatesFilter<"TimeSlot"> | number
+    startTime?: DateTimeWithAggregatesFilter<"TimeSlot"> | Date | string
+    endTime?: DateTimeWithAggregatesFilter<"TimeSlot"> | Date | string
+    isBooked?: BoolWithAggregatesFilter<"TimeSlot"> | boolean
   }
 
   export type UserCreateInput = {
@@ -4556,6 +5739,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     bookings?: BookingCreateNestedManyWithoutServiceInput
+    timeSlots?: TimeSlotCreateNestedManyWithoutServiceInput
   }
 
   export type ServiceUncheckedCreateInput = {
@@ -4571,6 +5755,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     bookings?: BookingUncheckedCreateNestedManyWithoutServiceInput
+    timeSlots?: TimeSlotUncheckedCreateNestedManyWithoutServiceInput
   }
 
   export type ServiceUpdateInput = {
@@ -4585,6 +5770,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bookings?: BookingUpdateManyWithoutServiceNestedInput
+    timeSlots?: TimeSlotUpdateManyWithoutServiceNestedInput
   }
 
   export type ServiceUncheckedUpdateInput = {
@@ -4600,6 +5786,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bookings?: BookingUncheckedUpdateManyWithoutServiceNestedInput
+    timeSlots?: TimeSlotUncheckedUpdateManyWithoutServiceNestedInput
   }
 
   export type ServiceCreateManyInput = {
@@ -4646,6 +5833,7 @@ export namespace Prisma {
   export type BookingCreateInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
+    status?: string
     service: ServiceCreateNestedOneWithoutBookingsInput
     user: UserCreateNestedOneWithoutBookingsInput
   }
@@ -4656,11 +5844,13 @@ export namespace Prisma {
     userId: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    status?: string
   }
 
   export type BookingUpdateInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
     service?: ServiceUpdateOneRequiredWithoutBookingsNestedInput
     user?: UserUpdateOneRequiredWithoutBookingsNestedInput
   }
@@ -4671,6 +5861,7 @@ export namespace Prisma {
     userId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
   }
 
   export type BookingCreateManyInput = {
@@ -4679,11 +5870,13 @@ export namespace Prisma {
     userId: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    status?: string
   }
 
   export type BookingUpdateManyMutationInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
   }
 
   export type BookingUncheckedUpdateManyInput = {
@@ -4692,6 +5885,59 @@ export namespace Prisma {
     userId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type TimeSlotCreateInput = {
+    startTime: Date | string
+    endTime: Date | string
+    isBooked?: boolean
+    service: ServiceCreateNestedOneWithoutTimeSlotsInput
+  }
+
+  export type TimeSlotUncheckedCreateInput = {
+    id?: number
+    serviceId: number
+    startTime: Date | string
+    endTime: Date | string
+    isBooked?: boolean
+  }
+
+  export type TimeSlotUpdateInput = {
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    isBooked?: BoolFieldUpdateOperationsInput | boolean
+    service?: ServiceUpdateOneRequiredWithoutTimeSlotsNestedInput
+  }
+
+  export type TimeSlotUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    serviceId?: IntFieldUpdateOperationsInput | number
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    isBooked?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type TimeSlotCreateManyInput = {
+    id?: number
+    serviceId: number
+    startTime: Date | string
+    endTime: Date | string
+    isBooked?: boolean
+  }
+
+  export type TimeSlotUpdateManyMutationInput = {
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    isBooked?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type TimeSlotUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    serviceId?: IntFieldUpdateOperationsInput | number
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    isBooked?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -4842,6 +6088,16 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type TimeSlotListRelationFilter = {
+    every?: TimeSlotWhereInput
+    some?: TimeSlotWhereInput
+    none?: TimeSlotWhereInput
+  }
+
+  export type TimeSlotOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type ServiceOrderByRelevanceInput = {
     fields: ServiceOrderByRelevanceFieldEnum | ServiceOrderByRelevanceFieldEnum[]
     sort: SortOrder
@@ -4944,12 +6200,19 @@ export namespace Prisma {
     isNot?: UserWhereInput
   }
 
+  export type BookingOrderByRelevanceInput = {
+    fields: BookingOrderByRelevanceFieldEnum | BookingOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
   export type BookingCountOrderByAggregateInput = {
     id?: SortOrder
     serviceId?: SortOrder
     userId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    status?: SortOrder
   }
 
   export type BookingAvgOrderByAggregateInput = {
@@ -4964,6 +6227,7 @@ export namespace Prisma {
     userId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    status?: SortOrder
   }
 
   export type BookingMinOrderByAggregateInput = {
@@ -4972,12 +6236,47 @@ export namespace Prisma {
     userId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    status?: SortOrder
   }
 
   export type BookingSumOrderByAggregateInput = {
     id?: SortOrder
     serviceId?: SortOrder
     userId?: SortOrder
+  }
+
+  export type TimeSlotCountOrderByAggregateInput = {
+    id?: SortOrder
+    serviceId?: SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    isBooked?: SortOrder
+  }
+
+  export type TimeSlotAvgOrderByAggregateInput = {
+    id?: SortOrder
+    serviceId?: SortOrder
+  }
+
+  export type TimeSlotMaxOrderByAggregateInput = {
+    id?: SortOrder
+    serviceId?: SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    isBooked?: SortOrder
+  }
+
+  export type TimeSlotMinOrderByAggregateInput = {
+    id?: SortOrder
+    serviceId?: SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    isBooked?: SortOrder
+  }
+
+  export type TimeSlotSumOrderByAggregateInput = {
+    id?: SortOrder
+    serviceId?: SortOrder
   }
 
   export type BookingCreateNestedManyWithoutUserInput = {
@@ -5045,11 +6344,25 @@ export namespace Prisma {
     connect?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
   }
 
+  export type TimeSlotCreateNestedManyWithoutServiceInput = {
+    create?: XOR<TimeSlotCreateWithoutServiceInput, TimeSlotUncheckedCreateWithoutServiceInput> | TimeSlotCreateWithoutServiceInput[] | TimeSlotUncheckedCreateWithoutServiceInput[]
+    connectOrCreate?: TimeSlotCreateOrConnectWithoutServiceInput | TimeSlotCreateOrConnectWithoutServiceInput[]
+    createMany?: TimeSlotCreateManyServiceInputEnvelope
+    connect?: TimeSlotWhereUniqueInput | TimeSlotWhereUniqueInput[]
+  }
+
   export type BookingUncheckedCreateNestedManyWithoutServiceInput = {
     create?: XOR<BookingCreateWithoutServiceInput, BookingUncheckedCreateWithoutServiceInput> | BookingCreateWithoutServiceInput[] | BookingUncheckedCreateWithoutServiceInput[]
     connectOrCreate?: BookingCreateOrConnectWithoutServiceInput | BookingCreateOrConnectWithoutServiceInput[]
     createMany?: BookingCreateManyServiceInputEnvelope
     connect?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
+  }
+
+  export type TimeSlotUncheckedCreateNestedManyWithoutServiceInput = {
+    create?: XOR<TimeSlotCreateWithoutServiceInput, TimeSlotUncheckedCreateWithoutServiceInput> | TimeSlotCreateWithoutServiceInput[] | TimeSlotUncheckedCreateWithoutServiceInput[]
+    connectOrCreate?: TimeSlotCreateOrConnectWithoutServiceInput | TimeSlotCreateOrConnectWithoutServiceInput[]
+    createMany?: TimeSlotCreateManyServiceInputEnvelope
+    connect?: TimeSlotWhereUniqueInput | TimeSlotWhereUniqueInput[]
   }
 
   export type EnumCategoryFieldUpdateOperationsInput = {
@@ -5078,6 +6391,20 @@ export namespace Prisma {
     deleteMany?: BookingScalarWhereInput | BookingScalarWhereInput[]
   }
 
+  export type TimeSlotUpdateManyWithoutServiceNestedInput = {
+    create?: XOR<TimeSlotCreateWithoutServiceInput, TimeSlotUncheckedCreateWithoutServiceInput> | TimeSlotCreateWithoutServiceInput[] | TimeSlotUncheckedCreateWithoutServiceInput[]
+    connectOrCreate?: TimeSlotCreateOrConnectWithoutServiceInput | TimeSlotCreateOrConnectWithoutServiceInput[]
+    upsert?: TimeSlotUpsertWithWhereUniqueWithoutServiceInput | TimeSlotUpsertWithWhereUniqueWithoutServiceInput[]
+    createMany?: TimeSlotCreateManyServiceInputEnvelope
+    set?: TimeSlotWhereUniqueInput | TimeSlotWhereUniqueInput[]
+    disconnect?: TimeSlotWhereUniqueInput | TimeSlotWhereUniqueInput[]
+    delete?: TimeSlotWhereUniqueInput | TimeSlotWhereUniqueInput[]
+    connect?: TimeSlotWhereUniqueInput | TimeSlotWhereUniqueInput[]
+    update?: TimeSlotUpdateWithWhereUniqueWithoutServiceInput | TimeSlotUpdateWithWhereUniqueWithoutServiceInput[]
+    updateMany?: TimeSlotUpdateManyWithWhereWithoutServiceInput | TimeSlotUpdateManyWithWhereWithoutServiceInput[]
+    deleteMany?: TimeSlotScalarWhereInput | TimeSlotScalarWhereInput[]
+  }
+
   export type BookingUncheckedUpdateManyWithoutServiceNestedInput = {
     create?: XOR<BookingCreateWithoutServiceInput, BookingUncheckedCreateWithoutServiceInput> | BookingCreateWithoutServiceInput[] | BookingUncheckedCreateWithoutServiceInput[]
     connectOrCreate?: BookingCreateOrConnectWithoutServiceInput | BookingCreateOrConnectWithoutServiceInput[]
@@ -5090,6 +6417,20 @@ export namespace Prisma {
     update?: BookingUpdateWithWhereUniqueWithoutServiceInput | BookingUpdateWithWhereUniqueWithoutServiceInput[]
     updateMany?: BookingUpdateManyWithWhereWithoutServiceInput | BookingUpdateManyWithWhereWithoutServiceInput[]
     deleteMany?: BookingScalarWhereInput | BookingScalarWhereInput[]
+  }
+
+  export type TimeSlotUncheckedUpdateManyWithoutServiceNestedInput = {
+    create?: XOR<TimeSlotCreateWithoutServiceInput, TimeSlotUncheckedCreateWithoutServiceInput> | TimeSlotCreateWithoutServiceInput[] | TimeSlotUncheckedCreateWithoutServiceInput[]
+    connectOrCreate?: TimeSlotCreateOrConnectWithoutServiceInput | TimeSlotCreateOrConnectWithoutServiceInput[]
+    upsert?: TimeSlotUpsertWithWhereUniqueWithoutServiceInput | TimeSlotUpsertWithWhereUniqueWithoutServiceInput[]
+    createMany?: TimeSlotCreateManyServiceInputEnvelope
+    set?: TimeSlotWhereUniqueInput | TimeSlotWhereUniqueInput[]
+    disconnect?: TimeSlotWhereUniqueInput | TimeSlotWhereUniqueInput[]
+    delete?: TimeSlotWhereUniqueInput | TimeSlotWhereUniqueInput[]
+    connect?: TimeSlotWhereUniqueInput | TimeSlotWhereUniqueInput[]
+    update?: TimeSlotUpdateWithWhereUniqueWithoutServiceInput | TimeSlotUpdateWithWhereUniqueWithoutServiceInput[]
+    updateMany?: TimeSlotUpdateManyWithWhereWithoutServiceInput | TimeSlotUpdateManyWithWhereWithoutServiceInput[]
+    deleteMany?: TimeSlotScalarWhereInput | TimeSlotScalarWhereInput[]
   }
 
   export type ServiceCreateNestedOneWithoutBookingsInput = {
@@ -5118,6 +6459,20 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutBookingsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutBookingsInput, UserUpdateWithoutBookingsInput>, UserUncheckedUpdateWithoutBookingsInput>
+  }
+
+  export type ServiceCreateNestedOneWithoutTimeSlotsInput = {
+    create?: XOR<ServiceCreateWithoutTimeSlotsInput, ServiceUncheckedCreateWithoutTimeSlotsInput>
+    connectOrCreate?: ServiceCreateOrConnectWithoutTimeSlotsInput
+    connect?: ServiceWhereUniqueInput
+  }
+
+  export type ServiceUpdateOneRequiredWithoutTimeSlotsNestedInput = {
+    create?: XOR<ServiceCreateWithoutTimeSlotsInput, ServiceUncheckedCreateWithoutTimeSlotsInput>
+    connectOrCreate?: ServiceCreateOrConnectWithoutTimeSlotsInput
+    upsert?: ServiceUpsertWithoutTimeSlotsInput
+    connect?: ServiceWhereUniqueInput
+    update?: XOR<XOR<ServiceUpdateToOneWithWhereWithoutTimeSlotsInput, ServiceUpdateWithoutTimeSlotsInput>, ServiceUncheckedUpdateWithoutTimeSlotsInput>
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -5266,6 +6621,7 @@ export namespace Prisma {
   export type BookingCreateWithoutUserInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
+    status?: string
     service: ServiceCreateNestedOneWithoutBookingsInput
   }
 
@@ -5274,6 +6630,7 @@ export namespace Prisma {
     serviceId: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    status?: string
   }
 
   export type BookingCreateOrConnectWithoutUserInput = {
@@ -5311,11 +6668,13 @@ export namespace Prisma {
     userId?: IntFilter<"Booking"> | number
     createdAt?: DateTimeFilter<"Booking"> | Date | string
     updatedAt?: DateTimeFilter<"Booking"> | Date | string
+    status?: StringFilter<"Booking"> | string
   }
 
   export type BookingCreateWithoutServiceInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
+    status?: string
     user: UserCreateNestedOneWithoutBookingsInput
   }
 
@@ -5324,6 +6683,7 @@ export namespace Prisma {
     userId: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    status?: string
   }
 
   export type BookingCreateOrConnectWithoutServiceInput = {
@@ -5333,6 +6693,29 @@ export namespace Prisma {
 
   export type BookingCreateManyServiceInputEnvelope = {
     data: BookingCreateManyServiceInput | BookingCreateManyServiceInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TimeSlotCreateWithoutServiceInput = {
+    startTime: Date | string
+    endTime: Date | string
+    isBooked?: boolean
+  }
+
+  export type TimeSlotUncheckedCreateWithoutServiceInput = {
+    id?: number
+    startTime: Date | string
+    endTime: Date | string
+    isBooked?: boolean
+  }
+
+  export type TimeSlotCreateOrConnectWithoutServiceInput = {
+    where: TimeSlotWhereUniqueInput
+    create: XOR<TimeSlotCreateWithoutServiceInput, TimeSlotUncheckedCreateWithoutServiceInput>
+  }
+
+  export type TimeSlotCreateManyServiceInputEnvelope = {
+    data: TimeSlotCreateManyServiceInput | TimeSlotCreateManyServiceInput[]
     skipDuplicates?: boolean
   }
 
@@ -5352,6 +6735,33 @@ export namespace Prisma {
     data: XOR<BookingUpdateManyMutationInput, BookingUncheckedUpdateManyWithoutServiceInput>
   }
 
+  export type TimeSlotUpsertWithWhereUniqueWithoutServiceInput = {
+    where: TimeSlotWhereUniqueInput
+    update: XOR<TimeSlotUpdateWithoutServiceInput, TimeSlotUncheckedUpdateWithoutServiceInput>
+    create: XOR<TimeSlotCreateWithoutServiceInput, TimeSlotUncheckedCreateWithoutServiceInput>
+  }
+
+  export type TimeSlotUpdateWithWhereUniqueWithoutServiceInput = {
+    where: TimeSlotWhereUniqueInput
+    data: XOR<TimeSlotUpdateWithoutServiceInput, TimeSlotUncheckedUpdateWithoutServiceInput>
+  }
+
+  export type TimeSlotUpdateManyWithWhereWithoutServiceInput = {
+    where: TimeSlotScalarWhereInput
+    data: XOR<TimeSlotUpdateManyMutationInput, TimeSlotUncheckedUpdateManyWithoutServiceInput>
+  }
+
+  export type TimeSlotScalarWhereInput = {
+    AND?: TimeSlotScalarWhereInput | TimeSlotScalarWhereInput[]
+    OR?: TimeSlotScalarWhereInput[]
+    NOT?: TimeSlotScalarWhereInput | TimeSlotScalarWhereInput[]
+    id?: IntFilter<"TimeSlot"> | number
+    serviceId?: IntFilter<"TimeSlot"> | number
+    startTime?: DateTimeFilter<"TimeSlot"> | Date | string
+    endTime?: DateTimeFilter<"TimeSlot"> | Date | string
+    isBooked?: BoolFilter<"TimeSlot"> | boolean
+  }
+
   export type ServiceCreateWithoutBookingsInput = {
     category: $Enums.Category
     title: string
@@ -5363,6 +6773,7 @@ export namespace Prisma {
     currentBookings?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    timeSlots?: TimeSlotCreateNestedManyWithoutServiceInput
   }
 
   export type ServiceUncheckedCreateWithoutBookingsInput = {
@@ -5377,6 +6788,7 @@ export namespace Prisma {
     currentBookings?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    timeSlots?: TimeSlotUncheckedCreateNestedManyWithoutServiceInput
   }
 
   export type ServiceCreateOrConnectWithoutBookingsInput = {
@@ -5426,6 +6838,7 @@ export namespace Prisma {
     currentBookings?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timeSlots?: TimeSlotUpdateManyWithoutServiceNestedInput
   }
 
   export type ServiceUncheckedUpdateWithoutBookingsInput = {
@@ -5440,6 +6853,7 @@ export namespace Prisma {
     currentBookings?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timeSlots?: TimeSlotUncheckedUpdateManyWithoutServiceNestedInput
   }
 
   export type UserUpsertWithoutBookingsInput = {
@@ -5468,16 +6882,92 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
   }
 
+  export type ServiceCreateWithoutTimeSlotsInput = {
+    category: $Enums.Category
+    title: string
+    providerName: string
+    contactEmail: string
+    contactPhone: string
+    available?: boolean
+    maxBookings?: number
+    currentBookings?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    bookings?: BookingCreateNestedManyWithoutServiceInput
+  }
+
+  export type ServiceUncheckedCreateWithoutTimeSlotsInput = {
+    id?: number
+    category: $Enums.Category
+    title: string
+    providerName: string
+    contactEmail: string
+    contactPhone: string
+    available?: boolean
+    maxBookings?: number
+    currentBookings?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    bookings?: BookingUncheckedCreateNestedManyWithoutServiceInput
+  }
+
+  export type ServiceCreateOrConnectWithoutTimeSlotsInput = {
+    where: ServiceWhereUniqueInput
+    create: XOR<ServiceCreateWithoutTimeSlotsInput, ServiceUncheckedCreateWithoutTimeSlotsInput>
+  }
+
+  export type ServiceUpsertWithoutTimeSlotsInput = {
+    update: XOR<ServiceUpdateWithoutTimeSlotsInput, ServiceUncheckedUpdateWithoutTimeSlotsInput>
+    create: XOR<ServiceCreateWithoutTimeSlotsInput, ServiceUncheckedCreateWithoutTimeSlotsInput>
+    where?: ServiceWhereInput
+  }
+
+  export type ServiceUpdateToOneWithWhereWithoutTimeSlotsInput = {
+    where?: ServiceWhereInput
+    data: XOR<ServiceUpdateWithoutTimeSlotsInput, ServiceUncheckedUpdateWithoutTimeSlotsInput>
+  }
+
+  export type ServiceUpdateWithoutTimeSlotsInput = {
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+    title?: StringFieldUpdateOperationsInput | string
+    providerName?: StringFieldUpdateOperationsInput | string
+    contactEmail?: StringFieldUpdateOperationsInput | string
+    contactPhone?: StringFieldUpdateOperationsInput | string
+    available?: BoolFieldUpdateOperationsInput | boolean
+    maxBookings?: IntFieldUpdateOperationsInput | number
+    currentBookings?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bookings?: BookingUpdateManyWithoutServiceNestedInput
+  }
+
+  export type ServiceUncheckedUpdateWithoutTimeSlotsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+    title?: StringFieldUpdateOperationsInput | string
+    providerName?: StringFieldUpdateOperationsInput | string
+    contactEmail?: StringFieldUpdateOperationsInput | string
+    contactPhone?: StringFieldUpdateOperationsInput | string
+    available?: BoolFieldUpdateOperationsInput | boolean
+    maxBookings?: IntFieldUpdateOperationsInput | number
+    currentBookings?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bookings?: BookingUncheckedUpdateManyWithoutServiceNestedInput
+  }
+
   export type BookingCreateManyUserInput = {
     id?: number
     serviceId: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    status?: string
   }
 
   export type BookingUpdateWithoutUserInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
     service?: ServiceUpdateOneRequiredWithoutBookingsNestedInput
   }
 
@@ -5486,6 +6976,7 @@ export namespace Prisma {
     serviceId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
   }
 
   export type BookingUncheckedUpdateManyWithoutUserInput = {
@@ -5493,6 +6984,7 @@ export namespace Prisma {
     serviceId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
   }
 
   export type BookingCreateManyServiceInput = {
@@ -5500,11 +6992,20 @@ export namespace Prisma {
     userId: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    status?: string
+  }
+
+  export type TimeSlotCreateManyServiceInput = {
+    id?: number
+    startTime: Date | string
+    endTime: Date | string
+    isBooked?: boolean
   }
 
   export type BookingUpdateWithoutServiceInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
     user?: UserUpdateOneRequiredWithoutBookingsNestedInput
   }
 
@@ -5513,6 +7014,7 @@ export namespace Prisma {
     userId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
   }
 
   export type BookingUncheckedUpdateManyWithoutServiceInput = {
@@ -5520,6 +7022,27 @@ export namespace Prisma {
     userId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type TimeSlotUpdateWithoutServiceInput = {
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    isBooked?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type TimeSlotUncheckedUpdateWithoutServiceInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    isBooked?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type TimeSlotUncheckedUpdateManyWithoutServiceInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    isBooked?: BoolFieldUpdateOperationsInput | boolean
   }
 
 
